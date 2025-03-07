@@ -168,6 +168,7 @@ url:
     for topic, liked_factor in topics_with_liked_factor:
         # Fetch news for the topic with the given liked_factor
         articles = get_news(topic, liked_factor)
+        print("Article fetched")
         for article in articles:
             recommended_articles.append(article)
         

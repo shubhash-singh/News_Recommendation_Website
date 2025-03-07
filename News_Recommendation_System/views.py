@@ -81,7 +81,7 @@ def recommended_news(request):
             user_email = data.get("email")
             
             if user_email == 'false':
-                user_topic = {"":""}
+                user_topic = {"0":"0"}
             else:
                 user_topic = topics(user_email)
                 print(user_topic)
