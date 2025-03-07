@@ -23,8 +23,6 @@ google_news = GNews(
     max_results=10,
 )
 
-# Dictionary to store user preferences
-user_preferences = defaultdict(int)
 
 # Mapping of user topics to valid GNews topic
 VALID_TOPIC = [
@@ -184,7 +182,7 @@ summary(url) -> summarised article
     text, image= scrape_article(url)
     return summarize_with_gemini(text), image
 
-def Fetch_top_headlines():
+def Fetch_top_headlines_Gnews():
     """
 Fetch_top_headlines() -> list of map
 map{
@@ -224,7 +222,7 @@ url:
         article.append(new_dict)
     return article
 
-def Add_like(topic_list, add):
+def Add_like(topic_list, add, user_preferences):
     for topic in topic_list:
         user_preferences[topic] += add
 
@@ -252,4 +250,4 @@ def Fetch_top_news():
     
     return filtered_articles
 
-print(Fetch_top_headlines())
+# print(Fetch_top_headlines())
