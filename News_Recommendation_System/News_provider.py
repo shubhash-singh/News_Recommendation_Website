@@ -3,9 +3,12 @@ import newspaper
 import google.generativeai as genai
 from collections import defaultdict
 from googlenewsdecoder import gnewsdecoder
+from newsapi import NewsApiClient
 
 # Initialize Gemini API
 GEMINI_API_KEY = "AIzaSyCsc_ClsvSjLymAZFwZIHITfiaNzA4lvh4"
+NEWS_API_KEY = "f5f346835b0d424ebbfa7005c72ce0b8"
+newsapi = NewsApiClient(api_key='f5f346835b0d424ebbfa7005c72ce0b8')
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.0-flash')
 
@@ -68,10 +71,11 @@ def scrape_article(url):
         article = newspaper.Article(final_url)
         article.download()
         article.parse()
-        return article.text  # Use the .text attribute to get the article content
+
+        return article.text, article.images  # Use the .text attribute to get the article content
     except Exception as e:
         print(f"Error scraping article: {e}")
-        return None
+        return ""
 
 def summarize_with_gemini(text):
     """Summarize article content using Gemini."""
@@ -120,11 +124,6 @@ def get_topic(article_text):
         print(f"Error extracting topics with Gemini: {e}")
         return []  # Return an empty list if there's an error
 
-def add_preference(topic_list):
-    for topic in topic_list:
-        user_preferences[topic] += 1
-
-
 """
 reccomended_news(user_preferences) -> list of map
 map{
@@ -144,7 +143,7 @@ url:
 get_news_on()
 
 """
-def recommend_news(user_preferences):
+def Recommend_news(user_preferences):
     """
 reccomended_news(user_preferences) -> list of map
 map{
@@ -178,17 +177,16 @@ url:
     print(unique_articles)
     return unique_articles
 
-def summarise (url):
+def Summarise_with_image (url):
     """
 summary(url) -> summarised article
     """
-    text = scrape_article(url)
-    return summarize_with_gemini(text)
+    text, image= scrape_article(url)
+    return summarize_with_gemini(text), image
 
-
-def fetch_top_headlines():
+def Fetch_top_headlines():
     """
-fetch_top_news() -> list of map
+Fetch_top_headlines() -> list of map
 map{
 title:
 published_date:
@@ -206,7 +204,7 @@ url:
 
     return article if article else []
 
-def get_news_on (topic):
+def Get_news_on (topic):
     """
 get_news_on() -> list of map
 map{
@@ -218,9 +216,39 @@ url:
     headlines = google_news.get_news_by_topic(topic)
     article = []
     for data in headlines:
-        new_dict = {'title': data['title'],
-                    'published_date': data['published date'],
-                    'url': resolve_final_url(data['url']) 
-                    }
+        new_dict = {
+            'title': data['title'],
+            'published_date': data['published date'],
+            'url': resolve_final_url(data['url']),
+        }
         article.append(new_dict)
     return article
+
+def Add_like(topic_list, add):
+    for topic in topic_list:
+        user_preferences[topic] += add
+
+
+def Fetch_top_news():
+    top_headlines = newsapi.get_top_headlines(
+        category='business',
+        language='en',
+    )
+
+    articles = top_headlines.get('articles', [])
+    
+    filtered_articles = []
+    
+    for article in articles:
+        filtered_article = {
+            'website': article.get('author'),
+            'title': article.get('title'),
+            'publishedAt': article.get('publishedAt'),
+            'url': article.get('url'),
+            'urlToImage': article.get('urlToImage'),
+        }
+        
+        filtered_articles.append(filtered_article)
+    
+    return filtered_articles
+
