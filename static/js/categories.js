@@ -61,25 +61,28 @@ class CategoriesManager {
     }
 
     async updateCategories() {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
+        const email = sessionStorage.getItem('email'); // Retrieve email from session storage
+    
+        if (!email) {
             alert('Please login to update categories.');
             return;
         }
-
+    
         try {
             const response = await fetch('http://127.0.0.1:8000/update_categories/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    categories: Array.from(this.selectedCategories)
+                    email: email, 
+                    topics: Array.from(this.selectedCategories) // Convert Set to an array
                 })
             });
-
-            if (response.ok) {
+    
+            const data = await response.json(); // Parse JSON response
+    
+            if (response.ok && data.success === 'true') { // Check if success = true
                 alert('Categories updated successfully!');
                 this.closeCategoriesModal();
                 
@@ -95,6 +98,5 @@ class CategoriesManager {
             alert('An error occurred while updating categories.');
         }
     }
-}
-
+}    
 const categoriesManager = new CategoriesManager();

@@ -16,14 +16,6 @@ from .News_provider import Get_news_on as topic_based_news
 from .News_provider import get_topic
 
 @csrf_exempt
-def check_login_status_view(request):
-    if request.method == "GET":
-        login_status = request.COOKIES.get('login_status', 'false')  # Default to 'false' if cookie is missing
-        return JsonResponse({"login_status": login_status})
-
-    return JsonResponse({"error": "Invalid request method"}, status=405)
-
-@csrf_exempt
 def signup_view(request):
     if request.method == "POST":
         try:
@@ -40,9 +32,6 @@ def signup_view(request):
             # Call the signup function
             result = signup_user(email, password, name)
             response = JsonResponse({"result":result, "name": name, "email":email})
-            response.set_cookie('email', email, max_age=2592000, httponly=True, secure=True)
-            response.set_cookie('login_status', 'true', max_age=2592000, httponly=True, secure=True)
-
             return response
 
         except json.JSONDecodeError:
@@ -61,15 +50,12 @@ def login_view(request):
 
             # Check if required fields are provided
             if not email or not password:
-                return JsonResponse({"message": "Missing required fields"}, status=400)
+                return JsonResponse({"message": "Missing required fields","token":email}, status=400)
 
             # Call the signup function
             result = login_user(email, password)
-            response = JsonResponse(result)
-            response.set_cookie('email', email, max_age=2592000, httponly=True, secure=True)
-            response.set_cookie('login_status', 'true', max_age=2592000, httponly=True, secure=True)
-
-            return response  
+ 
+            return JsonResponse(result)
 
         except json.JSONDecodeError:
             return JsonResponse({"message": "Invalid JSON data"}, status=400)
@@ -80,7 +66,7 @@ def login_view(request):
 def top_news_view(request):
     if request.method == "GET":
         try:
-            news = top_news()  # Fetch top news (returns a list of dicts)
+            news = top_news()
             return JsonResponse({"news": news}, safe=False)  # Ensure JSON serialization
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)  # Handle exceptions
@@ -89,23 +75,17 @@ def top_news_view(request):
 
 @csrf_exempt
 def recommended_news(request):
-    if request.method == "GET":
+    if request.method == "POST":
         try:
-            
-            user_email = "subhashsingh2059@gmail.com"
+            data = json.loads(request.body)
+            user_email = data.get("email")
             
             if user_email == 'false':
                 user_topic = {"":""}
             else:
                 user_topic = topics(user_email)
-            # print("EMail :" + user_email)
-            # print(f"user topic : {user_topic}")
-            newses = Recommend_news(user_topic)
-            for news in newses:
-                # summary, image = summarize(news["url"])
-                # news["summary"] = summary
-                # news["image_url"] = image
-                print(news)
+                print(user_topic)
+            news = Recommend_news(user_topic)
             return JsonResponse({"news": news})
         
         
@@ -119,7 +99,8 @@ def recommended_news(request):
 def like_from_user_view(request):
     if request.method == "POST":
         try:
-            user_email = "subhashsingh2059@gmail.com"
+            data = json.loads(request.body)
+            user_email = data.get("email")
             
             data = json.loads(request.body)
             url = data.get("url")
@@ -133,9 +114,26 @@ def like_from_user_view(request):
                     user_topics[key] = 1    # Add new key with value 1 if not present
 
 
-            return JsonResponse({update_topics(user_email, user_topics)})
+            return JsonResponse({"status":update_topics(user_email, user_topics)})
             
         except json.JSONDecodeError as e:
             return JsonResponse({"error":str(e)})
+    else:
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+    
+@csrf_exempt
+def update_category_view(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            topics = data.get("topics")
+            
+            response = update_topics(email, topics)
+            if response:
+                return JsonResponse({"success":"true"})
+            return JsonResponse({"success":"false"})
+        except json.JSONDecodeError as e:
+            return JsonResponse({"error": str(e)})
     else:
         return JsonResponse({"error": "Invalid request method"}, status=405)

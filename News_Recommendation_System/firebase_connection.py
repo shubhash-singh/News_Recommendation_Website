@@ -25,7 +25,7 @@ def signup_user(email: str, password: str, name: str):
             'topics': {}
         })
         
-        return {"success": True, "message": "User signed up successfully"}
+        return {"success": True, "message": "User signed up successfully",'email':email, 'name':name}
 
     except Exception as e:
         return {"success": False, "message": f"Error: {str(e)}"}
@@ -52,7 +52,9 @@ def login_user(email: str, password: str) -> dict:
         
         # Check if the provided password matches the stored one
         if user_data.get("password") == password:
-            return {"success": True, "message": "Login successful", "user": user_data}
+            email = user_data['email']
+            name = user_data['name']
+            return {"success": True, "message": "Login successful", "email": email, 'name':name}
         else:
             return {"success": False, "message": "Incorrect password"}
 
@@ -94,20 +96,30 @@ def update_topics(email, topics):
         
         if user_doc is None:
             print("User not found.")
-            return
+            return False  # Return False if user is not found
 
         # Get existing topics or initialize if none
         user_topics = user_doc.to_dict().get("topics", {})
 
-        # Update topics
-        for key, value in topics.items():
-            user_topics[key] = user_topics.get(key, 0) + value
+        # Update topics count based on the list of strings
+        for topic in topics:
+            user_topics[topic] = user_topics.get(topic, 0) + 1
 
         # Save updated topics back to Firestore
         users_ref.document(user_doc.id).update({"topics": user_topics})
-        print("Topics updated successfully.")
-    
+        
+        # Verify if the update was successful
+        updated_doc = users_ref.document(user_doc.id).get()
+        updated_topics = updated_doc.to_dict().get("topics", {})
+        
+        # Check if the topics were updated correctly
+        if updated_topics == user_topics:
+            return True  # Return True if update was successful
+        else:
+            return False  # Return False if update failed
+            
     except Exception as e:
         print(f"Error: {e}")
+        return False  # Return False if an exception occurs
 
         
