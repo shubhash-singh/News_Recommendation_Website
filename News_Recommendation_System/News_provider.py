@@ -4,6 +4,9 @@ import google.generativeai as genai
 from collections import defaultdict
 from googlenewsdecoder import gnewsdecoder
 from newsapi import NewsApiClient
+from textblob import TextBlob
+from textblob.en import polarity, subjectivity
+
 
 # Initialize Gemini API
 GEMINI_API_KEY = "AIzaSyCsc_ClsvSjLymAZFwZIHITfiaNzA4lvh4"
@@ -38,17 +41,6 @@ VALID_TOPIC = [
 ]
 
 
-def get_news(topic, liked_factor):
-    google_news.max_results = int(20*liked_factor)
-    headlines = google_news.get_news_by_topic(topic)
-    article = []
-    for data in headlines:
-        new_dict = {'title': data['title'],
-                    'published_date': data['published date'],
-                    'url': resolve_final_url(data['url']) 
-                    }
-        article.append(new_dict)
-    return article
 
 def resolve_final_url(url):
     interval_time = 1  # interval is optional, default is None
@@ -141,48 +133,7 @@ url:
 get_news_on()
 
 """
-def Recommend_news(user_preferences):
-    """
-reccomended_news(user_preferences) -> list of map
-map{
-title:
-published_date:
-url:
-}
-    """
-    if not user_preferences:
-        print("No preferences recorded yet. Showing top headlines instead.")
-        return Fetch_top_news()
-    
-    # Calculate the total frequency of all topics
-    total_frequency = sum(user_preferences.values())
-    
-    # Normalize frequencies to calculate liked_factor (between 0 and 1)
-    topics_with_liked_factor = [
-        (topic, freq / total_frequency)  # liked_factor = freq / total_frequency
-        for topic, freq in user_preferences.items()
-    ]
-    
-    # Fetch news for each topic and combine the results
-    recommended_articles = []
-    for topic, liked_factor in topics_with_liked_factor:
-        # Fetch news for the topic with the given liked_factor
-        articles = get_news(topic, liked_factor)
-        for article in articles:
-            recommended_articles.append(article)
-        
-    unique_articles = list({article['url']: article for article in recommended_articles}.values())
-    print(unique_articles)
-    return unique_articles
 
-
-
-def Summarise_with_image (url):
-    """
-summary(url) -> summarised article
-    """
-    text, image= scrape_article(url)
-    return summarize_with_gemini(text), image
 
 def Fetch_top_headlines_Gnews():
     """
@@ -228,28 +179,98 @@ def Add_like(topic_list, add, user_preferences):
     for topic in topic_list:
         user_preferences[topic] += add
 
+def get_news(topic, liked_factor):
+    google_news.max_results = int(20*liked_factor)
+    headlines = google_news.get_news_by_topic(topic)
+    articles= []
+    for data in headlines:
+        title = data['title']
+        publisher = data.get('publisher', {}).get('title', 'Unknown Publisher')
+        url = resolve_final_url(data['url']) 
+        content, image = scrape_article(url)
+        summary = summarize_with_gemini(content)
+        blob = TextBlob(content)
+        sentiment = blob.sentiment
+        polarity = sentiment.polarity
+        subjectivity = sentiment.subjectivity
+        new_dict = {
+            'url': url,
+            'title': title,
+            'content' : content,
+            'image' : image,
+            'publisher': publisher,
+            'summary' : summary,
+            'polarity' : polarity,
+            'subjectivity' : subjectivity,
+        }
+        articles.append(new_dict)
+    return articles 
 
 def Fetch_top_news():
     top_headlines = newsapi.get_top_headlines(
-        category='business',
         language='en',
     )
-
     articles = top_headlines.get('articles', [])
     
     filtered_articles = []
     
-    for article in articles:
+    for article in articles[:11]:
+
+        url = article.get('url')
+        content, image = scrape_article(url)
+        publisher = article.get('author')
+        title = article.get('title')
+        summary = summarize_with_gemini(content)
+        blob = TextBlob(content)
+        sentiment = blob.sentiment
+        polarity = sentiment.polarity
+        subjectivity = sentiment.subjectivity
+    
         filtered_article = {
-            'website': article.get('author'),
-            'title': article.get('title'),
-            'publishedAt': article.get('publishedAt'),
-            'url': article.get('url'),
-            'urlToImage': article.get('urlToImage')
+            'url' : url,
+            'title' : title,
+            'content' : content,
+            'image' : image,
+            'publisher' : publisher,
+            'summary' : summary,
+            'polarity' : polarity,
+            'subjectivity' : subjectivity,
         }
-        summary = summarize_with_gemini(filtered_article["url"])
-        print("news summarized")
-        filtered_article["summary"] = summary
         filtered_articles.append(filtered_article)
     
     return filtered_articles
+
+
+def Recommend_news(user_preferences):
+    """
+reccomended_news(user_preferences) -> list of map
+map{
+title:
+published_date:
+url:
+}
+    """
+    if not user_preferences:
+        print("No preferences recorded yet. Showing top headlines instead.")
+        return Fetch_top_news()
+    
+    # Calculate the total frequency of all topics
+    total_frequency = sum(user_preferences.values())
+    
+    # Normalize frequencies to calculate liked_factor (between 0 and 1)
+    topics_with_liked_factor = [
+        (topic, freq / total_frequency)  # liked_factor = freq / total_frequency
+        for topic, freq in user_preferences.items()
+    ]
+    
+    # Fetch news for each topic and combine the results
+    recommended_articles = []
+    for topic, liked_factor in topics_with_liked_factor:
+        # Fetch news for the topic with the given liked_factor
+        articles = get_news(topic, liked_factor)
+        for article in articles:
+            recommended_articles.append(article)
+        
+    unique_articles = list({article['url']: article for article in recommended_articles}.values())
+    print(unique_articles)
+    return unique_articles
