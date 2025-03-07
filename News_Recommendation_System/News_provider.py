@@ -176,7 +176,6 @@ url:
     return unique_articles
 
 
-
 def Summarise_with_image (url):
     """
 summary(url) -> summarised article

@@ -61,10 +61,9 @@ class CategoriesManager {
     }
 
     async updateCategories() {
-        const token = sessionStorage.getItem('token');
         const email = sessionStorage.getItem('email'); // Retrieve email from session storage
     
-        if (!token || !email) {
+        if (!email) {
             alert('Please login to update categories.');
             return;
         }
@@ -74,7 +73,6 @@ class CategoriesManager {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     email: email, 
@@ -84,7 +82,7 @@ class CategoriesManager {
     
             const data = await response.json(); // Parse JSON response
     
-            if (response.ok && data.success === true) { // Check if success = true
+            if (response.ok && data.success === 'true') { // Check if success = true
                 alert('Categories updated successfully!');
                 this.closeCategoriesModal();
                 

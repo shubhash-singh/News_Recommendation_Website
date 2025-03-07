@@ -6,8 +6,8 @@ class AuthManager {
 
     init() {
         // Check if user is logged in
-        const token = sessionStorage.getItem('token');
-        this.isLoggedIn = !!token;
+        // sessionStorage.setItem('email', 'false');
+        // this.isLoggedIn = !!email;
         this.updateUI();
 
         // Event Listeners
@@ -46,7 +46,7 @@ class AuthManager {
 
             if (response.ok) {
                 const data = await response.json();
-                sessionStorage.setItem('token', data.token);
+                sessionStorage.setItem('email', email)
                 this.isLoggedIn = true;
                 this.updateUI();
                 this.closeAuthModal();
@@ -80,7 +80,10 @@ class AuthManager {
 
             if (response.ok) {
                 const data = await response.json();
-                sessionStorage.setItem('token', data.token);
+
+                
+
+                sessionStorage.setItem('email', email)
                 this.isLoggedIn = true;
                 this.updateUI();
                 this.closeAuthModal();
@@ -99,7 +102,7 @@ class AuthManager {
     }
 
     logout() {
-        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('email');
         this.isLoggedIn = false;
         this.updateUI();
         location.reload();

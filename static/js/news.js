@@ -30,16 +30,16 @@ class NewsManager {
     }
 
     async fetchRecommendedNews() {
-        const token = sessionStorage.getItem('token');
-        if (!token) return;
+        const email = sessionStorage.getItem('email');
+        if (!email) return;
 
         try {
             const response = await fetch('http://127.0.0.1:8000/recommended_news/', {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
+                },
+                body: JSON.stringify({ email:email})
             });
 
             if (response.ok) {
@@ -88,20 +88,18 @@ class NewsManager {
     }
 
     async handleLove(newsUrl) {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
+        const email = sessionStorage.getItem('email');
+        if (!email) {
             alert('Please login to save news.');
             return;
         }
-
         try {
-            const response = await fetch('http://127.0.0.1:8000/save_news/', {
+            const response = await fetch('http://127.0.0.1:8000/like_news/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ url: newsUrl })
+                body: JSON.stringify({email : email, url: newsUrl })
             });
 
             if (response.ok) {
