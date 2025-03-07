@@ -18,6 +18,8 @@ from django.urls import path
 from .views import login_view
 from .views import signup_view
 from .views import top_news_view
+from .views import check_login_status_view
+from .views import recommended_news
 
 
 
@@ -25,7 +27,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/',login_view, name="login"),
     path('signup/',signup_view, name='signup'),
-    path('top_news/',top_news_view, name="top_news")
+    path('top_news/',top_news_view, name="top_news"),
+    path("login_status/", check_login_status_view(), name="login_status"),
+    path("recommended_news/", recommended_news(), name="recommended_news")
 ]
 
 

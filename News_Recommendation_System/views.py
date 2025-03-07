@@ -99,9 +99,13 @@ def top_news_view(request):
 def recommended_news(request):
     if request.method == "GET":
         try:
-            user_email = JsonResponse.COOKIES.get('email')
-            print(user_email)
-            user_topic = topics(user_email)
+            
+            user_email = request.COOKIES.get('email',"false")  # Default to 'false' if cookie is missing
+            
+            if user_email == 'false':
+                user_topic = []
+            else:
+                user_topic = topics(user_email)
             news = Recommend_news(user_topic)
             
             if (len(news) > 0):
