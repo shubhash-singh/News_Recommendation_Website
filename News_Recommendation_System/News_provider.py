@@ -252,3 +252,4 @@ def Fetch_top_news():
     
     return filtered_articles
 
+print(Fetch_top_headlines())

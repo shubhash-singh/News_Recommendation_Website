@@ -17,13 +17,15 @@ from django.contrib import admin
 from django.urls import path
 from .views import login_view
 from .views import signup_view
+from .views import top_news_view
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/',login_view, name="login"),
-    path('signup/',signup_view, name='signup')
+    path('signup/',signup_view, name='signup'),
+    path('top_news/',top_news_view, name="top_news")
 ]
 
 
