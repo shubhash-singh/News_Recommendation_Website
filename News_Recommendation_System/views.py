@@ -8,7 +8,7 @@ from .firebase_connection import login_user
 from .firebase_connection import get_user_topics as topics
 
 # News fether class
-from .News_provider import Fetch_top_headlines as top_news
+from .News_provider import Fetch_top_news as top_news
 from .News_provider import Summarise_with_image as summarize
 from .News_provider import Recommend_news
 from .News_provider import Get_news_on as topic_based_news
@@ -99,7 +99,7 @@ def top_news_view(request):
 def recommended_news(request):
     if request.method == "GET":
         try:
-            user_email = JsonResponse.cookies.get('email')
+            user_email = JsonResponse.COOKIES.get('email')
             print(user_email)
             user_topic = topics(user_email)
             news = Recommend_news(user_topic)

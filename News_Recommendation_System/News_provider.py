@@ -243,7 +243,7 @@ def Fetch_top_news():
             'title': article.get('title'),
             'publishedAt': article.get('publishedAt'),
             'url': article.get('url'),
-            'urlToImage': article.get('urlToImage'),
+            'urlToImage': article.get('urlToImage')
         }
         
         filtered_articles.append(filtered_article)
