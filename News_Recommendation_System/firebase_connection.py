@@ -94,7 +94,7 @@ def update_topics(email, topics):
         
         if user_doc is None:
             print("User not found.")
-            return
+            return False  # Return False if user is not found
 
         # Get existing topics or initialize if none
         user_topics = user_doc.to_dict().get("topics", {})
@@ -105,9 +105,20 @@ def update_topics(email, topics):
 
         # Save updated topics back to Firestore
         users_ref.document(user_doc.id).update({"topics": user_topics})
-        print("Topics updated successfully.")
-    
+        
+        # Verify if the update was successful
+        updated_doc = users_ref.document(user_doc.id).get()
+        updated_topics = updated_doc.to_dict().get("topics", {})
+        
+        # Check if the topics were updated correctly
+        if updated_topics == user_topics:
+            return True  # Return True if update was successful
+        else:
+            return False  # Return False if update failed
+            
     except Exception as e:
         print(f"Error: {e}")
+        return False  # Return False if an exception occurs
+
 
         

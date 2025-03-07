@@ -26,6 +26,7 @@ from .views import top_news_view
 from .views import check_login_status_view
 from .views import recommended_news
 from .views import like_from_user_view
+from .views import update_category_view
 
 
 urlpatterns = [
@@ -36,5 +37,7 @@ urlpatterns = [
     path('top_news/',top_news_view, name="top_news"),
     path("login_status/", check_login_status_view, name="login_status"),
     path("recommended_news/", recommended_news, name="recommended_news"),
-    path("like_news/", like_from_user_view, name="like_news")
+    path("like_news/", like_from_user_view, name="like_news"),
+    path("update_categories/", update_category_view, name="update_categories")
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
