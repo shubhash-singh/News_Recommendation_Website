@@ -22,7 +22,7 @@ def signup_user(email: str, password: str, name: str):
             'name': name,
             'email': email,
             'password': password,
-            'topics': []
+            'topics': {}
         })
         
         return {"success": True, "message": "User signed up successfully"}
@@ -75,7 +75,39 @@ def get_user_topics(email:str):
             return {"success": False, "message": "User not found"}
         else:
             user_topic = user_data.get('topics')
-        return {"topic" : user_topic}
+        return user_topic
             
     except Exception as e:
         return {"succss":False, "message":f"Error: {str(e)}"}
+    
+    
+def update_topics(email, topics):
+    try:
+        users_ref = db.collection("user")
+        
+        # Get user document based on email
+        query = users_ref.where("email", "==", email).stream()
+        user_doc = None
+        for doc in query:
+            user_doc = doc
+            break
+        
+        if user_doc is None:
+            print("User not found.")
+            return
+
+        # Get existing topics or initialize if none
+        user_topics = user_doc.to_dict().get("topics", {})
+
+        # Update topics
+        for key, value in topics.items():
+            user_topics[key] = user_topics.get(key, 0) + value
+
+        # Save updated topics back to Firestore
+        users_ref.document(user_doc.id).update({"topics": user_topics})
+        print("Topics updated successfully.")
+    
+    except Exception as e:
+        print(f"Error: {e}")
+
+        

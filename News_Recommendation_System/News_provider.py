@@ -152,7 +152,7 @@ url:
     """
     if not user_preferences:
         print("No preferences recorded yet. Showing top headlines instead.")
-        return
+        return Fetch_top_news()
     
     # Calculate the total frequency of all topics
     total_frequency = sum(user_preferences.values())
@@ -174,6 +174,8 @@ url:
     unique_articles = list({article['url']: article for article in recommended_articles}.values())
     print(unique_articles)
     return unique_articles
+
+
 
 def Summarise_with_image (url):
     """
@@ -245,9 +247,9 @@ def Fetch_top_news():
             'url': article.get('url'),
             'urlToImage': article.get('urlToImage')
         }
-        
+        summary = summarize_with_gemini(filtered_article["url"])
+        print("news summarized")
+        filtered_article["summary"] = summary
         filtered_articles.append(filtered_article)
     
     return filtered_articles
-
-# print(Fetch_top_headlines())
