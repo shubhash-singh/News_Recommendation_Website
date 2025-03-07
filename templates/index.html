@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Recommendation</title>
+    <link rel="stylesheet" href="C:\Users\91903\Desktop\News_Recommendation_Website\static\css\styles.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">NewsRec</div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="fetchNews('general')">General</a></li>
+            <li><a href="#" onclick="fetchNews('technology')">Technology</a></li>
+            <li><a href="#" onclick="fetchNews('sports')">Sports</a></li>
+            <li><a href="#" onclick="fetchNews('business')">Business</a></li>
+        </ul>
+        <input type="text" id="searchInput" placeholder="Search news..." onkeyup="searchNews()">
+    </nav>
+
+    <!-- News Container -->
+    <div class="news-container" id="newsContainer">
+        <!-- News articles will be inserted here dynamically -->
+    </div>
+
+    <script src="C:\Users\91903\Desktop\News_Recommendation_Website\static\js\scripts.js"></script>
+</body>
+</html>
