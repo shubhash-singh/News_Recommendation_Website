@@ -139,3 +139,21 @@ def like_from_user_view(request):
             return JsonResponse({"error":str(e)})
     else:
         return JsonResponse({"error": "Invalid request method"}, status=405)
+    
+@csrf_exempt
+def update_category_view(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            topics = data.get("topics")
+            
+            response = update_topics(email, topics)
+            if response:
+                
+                return JsonResponse({"success":"true"})
+            return JsonResponse({"success":"false"})
+        except json.JSONDecodeError as e:
+            return JsonResponse({"error": str(e)})
+    else:
+        return JsonResponse({"error": "Invalid request method"}, status=405)
