@@ -421,3 +421,33 @@ header {
         padding: 0.7rem;
     }
 }
+
+
+.slider-container {
+    margin-top: 1rem;
+}
+
+input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    accent-color: #ff8c00;
+}
+
+
+
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.slider-label {
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="range"] {
+    flex: 1; /* Makes the slider take up remaining space */
+    cursor: pointer;
+    accent-color: #ff8c00;
+}

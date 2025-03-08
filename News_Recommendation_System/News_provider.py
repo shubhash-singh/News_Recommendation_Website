@@ -86,7 +86,7 @@ def scrape_article(url):
 
     try:
         # Fetch the HTML content using requests
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=headers, timeout=5)
         response.raise_for_status()  # Raise an exception for HTTP errors (e.g., 403, 404)
 
         # Create an Article object

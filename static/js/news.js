@@ -65,22 +65,42 @@ class NewsManager {
             // Create summarized version of content
             const summary = this.createSummary(news.content || news.description || '');
     
-            newsItem.innerHTML = `
-                        <div class="news-item">
-            <div class="image-container">
-                <img src="${news.image || 'placeholder.jpg'}" alt="News Image">
-                <button class="love-btn" data-url="${news.url}">🤍</button>
-            </div>
-            <div class="news-item-content">
-                <h3><a href="${news.url}" target="_blank" class="news-title" data-url="${news.url}">${news.title}</a></h3>
-                <p class="publisher"><strong>Published by:</strong> ${news.domain || 'Unknown'}</p>
-                <p class="bias"><strong>Bias:</strong> ${news.Bias || 'Unknown'}</p>
-                <p class="factual-reporting"><strong>Factual Reporting:</strong> ${news.Factual_Reporting || 'Unknown'}</p>
-                <p class="credibility"><strong>Credibility:</strong> ${news.Credibility || 'Unknown'}</p>
-                <p class="summary">${news.summary}</p>
-            </div>
-        </div>
-            `;
+            newsItem.innerHTML = `                        
+                <div class="image-container">
+                    <img src="${news.image || 'placeholder.jpg'}" alt="News Image">
+                    <button class="love-btn" data-url="${news.url}">🤍</button>
+                </div>
+                <div class="news-item-content">
+                    <h3><a href="${news.url}" target="_blank" class="news-title" data-url="${news.url}">${news.title}</a></h3>
+                    <p class="publisher"><strong>Published by:</strong> ${news.domain || 'Unknown'}</p>
+                    <p class="bias"><strong>Bias:</strong> ${news.Bias || 'Unknown'}</p>
+                    <p class="factual-reporting"><strong>Factual Reporting:</strong> ${news.Factual_Reporting || 'Unknown'}</p>
+                    <p class="credibility"><strong>Credibility:</strong> ${news.Credibility || 'Unknown'}</p>
+                    <p class="summary">${news.summary}</p>
+
+                    <!-- Polarity Slider -->
+                        <div class="slider-container">
+                            <label><strong>Polarity:</strong></label>
+                            <div class="slider-wrapper">
+                                <span class="slider-label">-ve</span>
+                                <input type="range" id="polarity-slider" min="-1" max="1" step="0.01" value="${news.polarity}" disabled>
+                                <span class="slider-label">+ve</span>
+                            </div>
+                        </div>
+
+                        <!-- Subjectivity Slider -->
+                        <div class="slider-container">
+                            <label><strong>Subjectivity:</strong></label>
+                            <div class="slider-wrapper">
+                                <span class="slider-label">Opinion</span>
+                                <input type="range" id="subjectivity-slider" min="-1" max="1" step="0.01" value="${news.subjectivity}" disabled>
+                                <span class="slider-label">Factual</span>
+                            </div>
+                        </div>
+
+                </div>
+`;
+
     
             // Check if user is logged in
             const isLoggedIn = !!sessionStorage.getItem('email');
