@@ -10,10 +10,8 @@ from .firebase_connection import update_topics
 
 # News fether class
 from .News_provider import Fetch_top_news as top_news
-from .News_provider import Summarise_with_image as summarize
 from .News_provider import Recommend_news
-from .News_provider import Get_news_on as topic_based_news
-from .News_provider import get_topic
+from .News_provider import Get_topic
 
 @csrf_exempt
 def signup_view(request):
@@ -67,7 +65,7 @@ def top_news_view(request):
     if request.method == "GET":
         try:
             news = top_news()
-            return JsonResponse({"news": news}, safe=False)  # Ensure JSON serialization
+            return JsonResponse({"news": news})  # Ensure JSON serialization
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)  # Handle exceptions
 
@@ -104,7 +102,7 @@ def like_from_user_view(request):
             
             data = json.loads(request.body)
             url = data.get("url")
-            url_topics = get_topic(url)
+            url_topics = Get_topic(url)
             user_topics = topics(user_email)
             
             for key in url_topics:

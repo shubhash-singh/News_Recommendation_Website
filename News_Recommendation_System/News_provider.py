@@ -1,7 +1,10 @@
 from gnews import GNews
-import newspaper
+import requests
+import tldextract
+import json
+from newspaper import Article
+from newspaper.article import ArticleException
 import google.generativeai as genai
-from collections import defaultdict
 from googlenewsdecoder import gnewsdecoder
 from newsapi import NewsApiClient
 from textblob import TextBlob
@@ -41,6 +44,10 @@ VALID_TOPIC = [
 ]
 
 
+def get_domain(url):
+    extracted = tldextract.extract(url)
+    domain = f"{extracted.domain}.{extracted.suffix}"
+    return domain
 
 def resolve_final_url(url):
     interval_time = 1  # interval is optional, default is None
@@ -49,23 +56,60 @@ def resolve_final_url(url):
 
     return decoded_url["decoded_url"]
     
+def check_news_source(url):
+    """
+    Check the bias, factual reporting, and credibility of a given URL based on the provided JSON file.
+
+    :param url: The URL of the news source to check.
+    :param json_file: The path to the JSON file containing the news source data.
+    :return: A dictionary containing the bias, factual reporting, and credibility of the URL.
+             Returns None if the URL is not found in the JSON file.
+    """
+    domain = get_domain(url)
+    json_file = 'News_Recommendation_System/bias-check.json'  # Replace with the actual path to your JSON file
+    # Load the JSON data from the file
+    with open(json_file, 'r') as file:
+        data = json.load(file)
+    
+    if domain in data:
+        return data[domain]
+    else:
+        return data["default"]
+
 
 def scrape_article(url):
     """Scrape article content using newspaper3k."""
-    try:
-        # Resolve the final URL
-        final_url = resolve_final_url(url)
-        print(f"Final URL: {final_url}")
+    # Set a User-Agent header to mimic a browser request
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    }
 
-        # Use newspaper3k to scrape the article
-        article = newspaper.Article(final_url)
-        article.download()
+    try:
+        # Fetch the HTML content using requests
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()  # Raise an exception for HTTP errors (e.g., 403, 404)
+
+        # Create an Article object
+        article = Article(url)
+
+        # Download and parse the article using the fetched HTML
+        article.download(input_html=response.text)
         article.parse()
 
-        return article.text, article.images  # Use the .text attribute to get the article content
-    except Exception as e:
-        print(f"Error scraping article: {e}")
-        return ""
+        # Extract the image and text
+        image = article.top_image
+        text = article.text
+
+        return text, image
+
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to fetch the article: {e}")
+        return "","" 
+    except ArticleException as e:
+        print(f"Failed to parse the article: {e}")
+        return "","" 
+
+
 
 def summarize_with_gemini(text):
     """Summarize article content using Gemini."""
@@ -91,9 +135,10 @@ def get_news(topic, liked_factor):
         title = data['title']
         publisher = data.get('publisher', {}).get('title', 'unknown publisher')
         url = resolve_final_url(data['url']) 
+        domain = get_domain(url)
         content, image = scrape_article(url)
         summary = summarize_with_gemini(content)
-        blob = textblob(content)
+        blob = TextBlob(content)
         sentiment = blob.sentiment
         polarity = sentiment.polarity
         subjectivity = sentiment.subjectivity
@@ -102,6 +147,7 @@ def get_news(topic, liked_factor):
             'title': title,
             'content' : content,
             'image' : image,
+            'domain' : domain,
             'publisher': publisher,
             'summary' : summary,
             'polarity' : polarity,
@@ -144,23 +190,28 @@ def Fetch_top_news():
         url = article.get('url')
         content, image = scrape_article(url)
         publisher = article.get('author')
+        domain = get_domain(url)
         title = article.get('title')
         summary = summarize_with_gemini(content)
-        blob = textblob(content)
+        blob = TextBlob(content)
         sentiment = blob.sentiment
         polarity = sentiment.polarity
         subjectivity = sentiment.subjectivity
+        bias = check_news_source(url)
     
         filtered_article = {
             'url' : url,
             'title' : title,
             'content' : content,
             'image' : image,
+            'domain' : domain,
             'publisher' : publisher,
             'summary' : summary,
             'polarity' : polarity,
             'subjectivity' : subjectivity,
         }
+        for key, value in bias.items():
+            filtered_article[key] = value
         filtered_articles.append(filtered_article)
     
     return filtered_articles
@@ -177,7 +228,7 @@ url:
     """
     if not user_preferences:
         print("no preferences recorded yet. showing top headlines instead.")
-        return fetch_top_news()
+        return Fetch_top_news()
     
     # calculate the total frequency of all topics
     total_frequency = sum(user_preferences.values())
@@ -193,7 +244,6 @@ url:
     for topic, liked_factor in topics_with_liked_factor:
         # fetch news for the topic with the given liked_factor
         articles = get_news(topic, liked_factor)
-        print("Article fetched")
         for article in articles:
             recommended_articles.append(article)
         
@@ -223,3 +273,4 @@ def Get_topic(url):
         if topic in VALID_TOPIC:
             cleaned_topic.append(topic)
     return cleaned_topic
+# print(Fetch_top_news())

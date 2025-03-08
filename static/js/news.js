@@ -56,31 +56,65 @@ class NewsManager {
     displayNews(newsItems) {
         const newsContainer = document.getElementById('news-container');
         newsContainer.innerHTML = '';
-
+    
         newsItems.forEach(news => {
             const newsItem = document.createElement('div');
             newsItem.className = 'news-item';
             
             // Create summarized version of content
             const summary = this.createSummary(news.content || news.description || '');
-
+    
             newsItem.innerHTML = `
                 <img src="${news.urlToImage || 'placeholder.jpg'}" alt="News Image">
                 <div class="news-item-content">
-                    <h3><a href="${news.url}" target="_blank">${news.title}</a></h3>
+                    <h3><a href="${news.url}" target="_blank" class="news-title" data-url="${news.url}">${news.title}</a></h3>
                     <p class="date">${new Date(news.publishedAt).toLocaleString()}</p>
                     <p class="summary">${summary}</p>
                     <button class="love-btn" data-url="${news.url}">❤</button>
+                    <button class="read-more-btn" data-url="${news.url}">Read More</button>
                 </div>
             `;
-
-            // Add love button event listener
+    
+            // Check if user is logged in
+            const isLoggedIn = !!sessionStorage.getItem('email');
+    
+            // Event listener for love button
             const loveBtn = newsItem.querySelector('.love-btn');
-            loveBtn.addEventListener('click', () => this.handleLove(news.url));
-
+            loveBtn.addEventListener('click', () => {
+                if (isLoggedIn) {
+                    this.handleLove(news.url);
+                } else {
+                    alert('Please login to save news.');
+                }
+            });
+    
+            // Event listener for news title click
+            const newsTitle = newsItem.querySelector('.news-title');
+            newsTitle.addEventListener('click', (event) => {
+                if (isLoggedIn) {
+                    this.handleLove(news.url);
+                } else {
+                    alert('Please login to open the Full article.');
+                    event.preventDefault(); // Prevent navigation if not logged in
+                }
+            });
+    
+            // Event listener for "Read More" button
+            const readMoreBtn = newsItem.querySelector('.read-more-btn');
+            readMoreBtn.addEventListener('click', () => {
+                if (isLoggedIn) {
+                    this.handleLove(news.url);
+                    window.open(news.url, '_blank');
+                } else {
+                    alert('Please login to read more.');
+                }
+            });
+    
             newsContainer.appendChild(newsItem);
         });
     }
+    
+
 
     createSummary(content) {
         // Create a summary of about 100 characters
