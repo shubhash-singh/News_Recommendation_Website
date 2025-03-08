@@ -40,3 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial news load
     newsManager.fetchTopNews();
 });
+document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("click", (event) => {
+        if (event.target.classList.contains("love-btn")) {
+            event.target.classList.toggle("loved"); // Toggle the class
+        }
+    });
+});

@@ -137,6 +137,8 @@ def get_news(topic, liked_factor):
         url = resolve_final_url(data['url']) 
         domain = get_domain(url)
         content, image = scrape_article(url)
+        if content == "":
+            continue
         summary = summarize_with_gemini(content)
         blob = TextBlob(content)
         sentiment = blob.sentiment
@@ -189,6 +191,8 @@ def Fetch_top_news():
 
         url = article.get('url')
         content, image = scrape_article(url)
+        if content == "":
+            continue
         publisher = article.get('author')
         domain = get_domain(url)
         title = article.get('title')

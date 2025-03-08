@@ -133,7 +133,7 @@ header {
     font-size: 0.9rem;
 }
 
-.love-btn {
+/* .love-btn {
     border: none;
     background: none;
     color: #ff4757;
@@ -141,9 +141,23 @@ header {
     font-size: 1.2rem;
     padding: 0.5rem;
     transition: transform 0.2s;
+} */
+ /*like button*/
+.love-btn {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
 }
 
-.love-btn:hover {
+.love-btn.loved {
+    color: red;
+    content: "❤️";
+}
+
+
+.love-btn.loved:hover {
     transform: scale(1.2);
 }
 
@@ -230,6 +244,7 @@ header {
     display: none;
 }
 
+
 /* Categories Grid */
 .categories-grid {
     display: grid;
@@ -302,3 +317,4 @@ header {
         text-align: center;
     }
 }
+

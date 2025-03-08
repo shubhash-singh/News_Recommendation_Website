@@ -65,12 +65,15 @@ class NewsManager {
             const summary = this.createSummary(news.content || news.description || '');
     
             newsItem.innerHTML = `
-                <img src="${news.urlToImage || 'placeholder.jpg'}" alt="News Image">
+                <img src="${news.image || 'placeholder.jpg'}" alt="News Image">
                 <div class="news-item-content">
                     <h3><a href="${news.url}" target="_blank" class="news-title" data-url="${news.url}">${news.title}</a></h3>
-                    <p class="date">${new Date(news.publishedAt).toLocaleString()}</p>
-                    <p class="summary">${summary}</p>
-                    <button class="love-btn" data-url="${news.url}">❤</button>
+                    <p class="publisher"><strong>Published by:</strong> ${news.domain || 'Unknown'}</p>
+                    <p class="bias"><strong>Bias:</strong> ${news.Bias || 'Unknown'}</p>
+                    <p class="factual-reporting"><strong>Factual Reporting:</strong> ${news.Factual_Reporting || 'Unknown'}</p>
+                    <p class="credibility"><strong>Credibility:</strong> ${news.Credibility || 'Unknown'}</p>
+                    <p class="summary">${news.summary}</p>
+                    <button class="love-btn" data-url="${news.url}">🤍</button>
                     <button class="read-more-btn" data-url="${news.url}">Read More</button>
                 </div>
             `;
