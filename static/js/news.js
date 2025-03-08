@@ -80,7 +80,7 @@ class NewsManager {
 
                     <!-- Polarity Slider -->
                         <div class="slider-container">
-                            <label><strong>Polarity:</strong></label>
+                            <label>Polarity:</label>
                             <div class="slider-wrapper">
                                 <span class="slider-label">-ve</span>
                                 <input type="range" id="polarity-slider" min="-1" max="1" step="0.01" value="${news.polarity}" disabled>

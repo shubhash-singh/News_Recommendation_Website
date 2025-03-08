@@ -139,8 +139,10 @@ header {
 /* News Grid */
 .news-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(3,1fr);
+    gap: 3rem;
+    
+   
 }
 
 .news-item {
@@ -149,6 +151,7 @@ header {
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(255, 140, 0, 0.1);
     transition: transform 0.3s;
+    width: 100%;
 }
 
 .news-item:hover {
@@ -160,6 +163,7 @@ header {
     width: 100%;
     height: 200px;
     object-fit: cover;
+    
 }
 
 .news-item-content {
@@ -174,17 +178,10 @@ header {
 .news-item p {
     color: #666;
     font-size: 0.9rem;
+    margin-top:5px;
+    
 }
 
-/* .love-btn {
-    border: none;
-    background: none;
-    color: #ff4757;
-    cursor: pointer;
-    font-size: 1.2rem;
-    padding: 0.5rem;
-    transition: transform 0.2s;
-} */
 .image-container {
     position: relative;
     display: inline-block;
@@ -192,8 +189,9 @@ header {
 
 .image-container img {
     width: 100%;
-    height: auto;
-    border-radius: 8px;
+    height: 200px;
+    object-fit: cover;
+    display: block;
 }
 
 .love-btn {
@@ -423,31 +421,53 @@ header {
 }
 
 
+/* Common Styles */
 .slider-container {
     margin-top: 1rem;
+    font-size: 14px;
 }
-
-input[type="range"] {
-    width: 100%;
-    cursor: pointer;
-    accent-color: #ff8c00;
-}
-
-
 
 .slider-wrapper {
     display: flex;
     align-items: center;
     gap: 10px;
+    width: 100%;
 }
 
 .slider-label {
-    font-weight: bold;
-    color: #555;
+    font-weight: 100;
+    color: #333;
 }
 
+/* Style the range input */
 input[type="range"] {
-    flex: 1; /* Makes the slider take up remaining space */
+    flex: 1;
+    appearance: none;
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(to right, red, yellow, green); /* Gradient from Red (-1) to Green (+1) */
+    outline: none;
     cursor: pointer;
-    accent-color: #ff8c00;
 }
+
+/* Thumb styling */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #000; /* Black thumb */
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #000;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+}
+

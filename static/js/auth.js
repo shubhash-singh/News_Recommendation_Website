@@ -8,6 +8,9 @@ class AuthManager {
         // Check if user is logged in
         // sessionStorage.setItem('email', 'false');
         // this.isLoggedIn = !!email;
+        const email = localStorage.getItem('email');
+        this.isLoggedIn = !!email;
+
         this.updateUI();
 
         // Event Listeners
@@ -51,6 +54,7 @@ class AuthManager {
 
                 sessionStorage.setItem('email', email)
                 sessionStorage.setItem('name', name)
+                localStorage.setItem('email', email)
                 this.isLoggedIn = true;
                 this.updateUI();
                 this.closeAuthModal();
@@ -106,6 +110,7 @@ class AuthManager {
     }
 
     logout() {
+        localStorage.removeItem('email');
         sessionStorage.removeItem('email');
         this.isLoggedIn = false;
         this.updateUI();
