@@ -3,6 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mobile menu toggle
     const menuToggle = document.getElementById('menu-toggle');
     const sidebar = document.getElementById('sidebar');
+    const profileName = document.getElementById('profile-name');
+    const profileEmail= document.getElementById('profile-email');
+    
+
+     document.addEventListener("click", function (event) {
+        if (event.target.classList.contains("love-btn")) {
+            event.target.classList.toggle("active");
+            event.target.textContent = event.target.classList.contains("active") ? "❤️" : "🤍";
+        }
+    });
+
     
     menuToggle.addEventListener('click', () => {
         sidebar.classList.toggle('active');
@@ -16,6 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    
+    const email = sessionStorage.getItem('email');
+    const name = sessionStorage.getItem('name');
+    if(name){
+        profileName.textContent = name;
+    }
+    if(email){
+        profileEmail.textContent = email;
+    }
+
+    
+
 
     // Close modals when clicking outside
     window.addEventListener('click', (e) => {
@@ -40,3 +63,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial news load
     newsManager.fetchTopNews();
 });
+

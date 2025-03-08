@@ -63,6 +63,49 @@ body {
 .sidebar li a.active {
     background-color: #ffa500;
 }
+/* Profile Section */
+.profile-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #ff8c00;
+    border-radius: 8px;
+    border: 1px solid white;
+    margin:10px;
+}
+
+.profile-section img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+}
+
+.profile-info p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    padding: 10px;
+}
+
+ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
 
 /* Main Content */
 main {
@@ -133,7 +176,7 @@ header {
     font-size: 0.9rem;
 }
 
-.love-btn {
+/* .love-btn {
     border: none;
     background: none;
     color: #ff4757;
@@ -141,11 +184,44 @@ header {
     font-size: 1.2rem;
     padding: 0.5rem;
     transition: transform 0.2s;
+} */
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.love-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 .love-btn:hover {
-    transform: scale(1.2);
+    background: #ffcccc;
 }
+
+/* Filled heart when clicked */
+.love-btn.active {
+    color: red;
+}
+
+
+
+
 
 /* Modal Styles */
 .modal {
@@ -230,6 +306,7 @@ header {
     display: none;
 }
 
+
 /* Categories Grid */
 .categories-grid {
     display: grid;
@@ -300,5 +377,47 @@ header {
     .auth-container {
         width: 100%;
         text-align: center;
+    }
+}
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+/* Auth Button */
+#auth-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid #ff8c00;
+    background-color: white;
+    color: #ff8c00;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover Effect */
+#auth-btn:hover {
+    background-color: #ff8c00;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Active Effect */
+#auth-btn:active {
+    transform: scale(0.98);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    #auth-btn {
+        width: 100%;
+        font-size: 0.9rem;
+        padding: 0.7rem;
     }
 }

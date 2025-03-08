@@ -12,9 +12,9 @@ from textblob.en import polarity, subjectivity
 
 
 # Initialize Gemini API
-GEMINI_API_KEY = "AIzaSyC_hvafYx0Jdmilr3l1wwPPbHFdULViqbc"
-# NEWS_API_KEY = "f5f346835b0d424ebbfa7005c72ce0b8"
-newsapi = NewsApiClient(api_key='b128924ffe9e45db93e9cc73284b34c3')
+GEMINI_API_KEY = "AIzaSyCsc_ClsvSjLymAZFwZIHITfiaNzA4lvh4"
+NEWS_API_KEY = "f5f346835b0d424ebbfa7005c72ce0b8"
+newsapi = NewsApiClient(api_key='f5f346835b0d424ebbfa7005c72ce0b8')
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.0-flash')
 
@@ -137,6 +137,8 @@ def get_news(topic, liked_factor):
         url = resolve_final_url(data['url']) 
         domain = get_domain(url)
         content, image = scrape_article(url)
+        if content == "":
+            continue
         summary = summarize_with_gemini(content)
         blob = TextBlob(content)
         sentiment = blob.sentiment
@@ -189,6 +191,8 @@ def Fetch_top_news():
 
         url = article.get('url')
         content, image = scrape_article(url)
+        if content == "":
+            continue
         publisher = article.get('author')
         domain = get_domain(url)
         title = article.get('title')
