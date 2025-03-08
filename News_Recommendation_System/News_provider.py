@@ -12,9 +12,9 @@ from textblob.en import polarity, subjectivity
 
 
 # Initialize Gemini API
-GEMINI_API_KEY = "AIzaSyCsc_ClsvSjLymAZFwZIHITfiaNzA4lvh4"
-NEWS_API_KEY = "f5f346835b0d424ebbfa7005c72ce0b8"
-newsapi = NewsApiClient(api_key='f5f346835b0d424ebbfa7005c72ce0b8')
+GEMINI_API_KEY = "AIzaSyANhH1-j0eLK8iIA7ttfRvH2HzP-vNb3m0"
+NEWS_API_KEY = "7891cc5e2e4b40eca5023d5511137abe"
+newsapi = NewsApiClient(api_key='7891cc5e2e4b40eca5023d5511137abe')
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.0-flash')
 
