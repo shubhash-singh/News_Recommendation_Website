@@ -100,11 +100,13 @@ def like_from_user_view(request):
             data = json.loads(request.body)
             user_email = data.get("email")
             
-            data = json.loads(request.body)
+           
             url = data.get("url")
             url_topics = Get_topic(url)
             user_topics = topics(user_email)
             
+            print("User Topics :", user_topics)
+            print("Url_topics", url_topics)
             for key in url_topics:
                 if key in user_topics:
                     user_topics[key] += 1  # Increment value if key exists
