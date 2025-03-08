@@ -8,6 +8,7 @@ class NewsManager {
         // Event listeners for news toggle
         document.getElementById('top-news-btn').addEventListener('click', () => this.switchView('top'));
         document.getElementById('recommended-news-btn').addEventListener('click', () => this.switchView('recommended'));
+      
     }
 
     async fetchTopNews() {
@@ -65,17 +66,20 @@ class NewsManager {
             const summary = this.createSummary(news.content || news.description || '');
     
             newsItem.innerHTML = `
+                        <div class="news-item">
+            <div class="image-container">
                 <img src="${news.image || 'placeholder.jpg'}" alt="News Image">
-                <div class="news-item-content">
-                    <h3><a href="${news.url}" target="_blank" class="news-title" data-url="${news.url}">${news.title}</a></h3>
-                    <p class="publisher"><strong>Published by:</strong> ${news.domain || 'Unknown'}</p>
-                    <p class="bias"><strong>Bias:</strong> ${news.Bias || 'Unknown'}</p>
-                    <p class="factual-reporting"><strong>Factual Reporting:</strong> ${news.Factual_Reporting || 'Unknown'}</p>
-                    <p class="credibility"><strong>Credibility:</strong> ${news.Credibility || 'Unknown'}</p>
-                    <p class="summary">${news.summary}</p>
-                    <button class="love-btn" data-url="${news.url}">🤍</button>
-                    <button class="read-more-btn" data-url="${news.url}">Read More</button>
-                </div>
+                <button class="love-btn" data-url="${news.url}">🤍</button>
+            </div>
+            <div class="news-item-content">
+                <h3><a href="${news.url}" target="_blank" class="news-title" data-url="${news.url}">${news.title}</a></h3>
+                <p class="publisher"><strong>Published by:</strong> ${news.domain || 'Unknown'}</p>
+                <p class="bias"><strong>Bias:</strong> ${news.Bias || 'Unknown'}</p>
+                <p class="factual-reporting"><strong>Factual Reporting:</strong> ${news.Factual_Reporting || 'Unknown'}</p>
+                <p class="credibility"><strong>Credibility:</strong> ${news.Credibility || 'Unknown'}</p>
+                <p class="summary">${news.summary}</p>
+            </div>
+        </div>
             `;
     
             // Check if user is logged in
@@ -100,19 +104,7 @@ class NewsManager {
                     alert('Please login to open the Full article.');
                     event.preventDefault(); // Prevent navigation if not logged in
                 }
-            });
-    
-            // Event listener for "Read More" button
-            const readMoreBtn = newsItem.querySelector('.read-more-btn');
-            readMoreBtn.addEventListener('click', () => {
-                if (isLoggedIn) {
-                    this.handleLove(news.url);
-                    window.open(news.url, '_blank');
-                } else {
-                    alert('Please login to read more.');
-                }
-            });
-    
+            });    
             newsContainer.appendChild(newsItem);
         });
     }
@@ -164,6 +156,9 @@ class NewsManager {
             this.fetchRecommendedNews();
         }
     }
+
+   
+
 }
 
 const newsManager = new NewsManager();

@@ -46,7 +46,11 @@ class AuthManager {
 
             if (response.ok) {
                 const data = await response.json();
+                
+                const name = data.name
+
                 sessionStorage.setItem('email', email)
+                sessionStorage.setItem('name', name)
                 this.isLoggedIn = true;
                 this.updateUI();
                 this.closeAuthModal();
@@ -110,7 +114,9 @@ class AuthManager {
 
     updateUI() {
         const authBtn = document.getElementById('auth-btn');
-        authBtn.textContent = this.isLoggedIn ? 'Profile' : 'Login / Signup';
+        authBtn.textContent = this.isLoggedIn ? authBtn.style.display = 'none' : 'Login / Signup';
+
+
         
         // Show/hide auth-required elements
         document.querySelectorAll('.auth-required').forEach(el => {

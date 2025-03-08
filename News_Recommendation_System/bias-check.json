@@ -4,6 +4,191 @@
         "Factual_Reporting": "Not Available",
         "Credibility": "Not Available"
     },
+    "thehindu.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "hindustantimes.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "livemint.com": {
+        "Bias": "Least Biased",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "livelaw.in": {
+        "Bias": "Neutral",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "firstpost.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "economictimes.indiatimes.com": {
+        "Bias": "Least Biased",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "indianexpress.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "barandbench.com": {
+        "Bias": "Neutral",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "bloomberg.com": {
+        "Bias": "Least Biased",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "financialexpress.com": {
+        "Bias": "Least Biased",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "news18.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "pib.gov.in": {
+        "Bias": "Government/Political",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "timesofindia.indiatimes.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "english.mathrubhumi.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "in.mashable.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "timesofindia.indiatimes.com/etimes": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "espncricinfo.com": {
+        "Bias": "Neutral",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "indiatvnews.com": {
+        "Bias": "Right-Center",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "crictoday.com": {
+        "Bias": "Neutral",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "reuters.com": {
+        "Bias": "Least Biased",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "business-standard.com": {
+        "Bias": "Least Biased",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "ndtvprofit.com": {
+        "Bias": "Least Biased",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "businessnewsthisweek.com": {
+        "Bias": "Least Biased",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "amrita.edu": {
+        "Bias": "Neutral",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "newsx.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "gulte.com": {
+        "Bias": "Right-Center",
+        "Factual_Reporting": "Mixed",
+        "Credibility": "Medium"
+    },
+    "thehindu.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "pmindia.gov.in": {
+        "Bias": "Government/Political",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "greatandhra.com": {
+        "Bias": "Right-Center",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "mid-day.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "livemint.com": {
+        "Bias": "Least Biased",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "indiatoday.in": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "space.com": {
+        "Bias": "Pro-Science",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "businessnewsthisweek.com": {
+        "Bias": "Least Biased",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
+    "indiatimes.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "amrita.edu": {
+        "Bias": "Neutral",
+        "Factual_Reporting": "High",
+        "Credibility": "High"
+    },
+    "newsx.com": {
+        "Bias": "Left-Center",
+        "Factual_Reporting": "Mostly Factual",
+        "Credibility": "Medium"
+    },
     "nbc11news.com": {
         "Bias": "Least Biased",
         "Factual_Reporting": "High",
